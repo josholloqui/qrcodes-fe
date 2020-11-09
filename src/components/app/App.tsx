@@ -1,5 +1,5 @@
 import React from 'react';
-import HomeQrInput from '../home/HomeInput';
+import HomeQrInput from '../home/HomeForm';
 
 
 function App() {
