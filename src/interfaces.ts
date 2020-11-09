@@ -11,3 +11,10 @@ export interface QRCode {
   createdAt: string,
   updatedAt: string
 }
+
+export interface QRElements {
+  id: number,
+  title: string,
+  url: string,
+  qr_code: string
+}

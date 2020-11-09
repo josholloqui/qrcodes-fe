@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { createQrCode, getAllQrCodes } from '../service/qrcodeAPI';
+import { useState } from 'react';
+import { createQrCode } from '../service/qrcodeAPI';
 import { CreateQR, QRCode } from '../interfaces';
 
 const useHomeForm = () => {
@@ -7,11 +7,21 @@ const useHomeForm = () => {
     title: '',
     url: ''
   });
+  const [qrCode, setQrCode] = useState<QRCode>({
+    id: 1,
+    title: '',
+    url: '',
+    qr_code: '',
+    createdAt: '',
+    updatedAt: ''
+  })
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const qrCode = await createQrCode(values);
+
+    setQrCode(qrCode);
 
     return qrCode;
   }
@@ -23,39 +33,13 @@ const useHomeForm = () => {
   };
 
   return {
-    values, 
+    values,
+    qrCode, 
     handleSubmit,
     handleChange
   }
 }
 
-const useGetAllQrCodes = () => {
-  const [qrCodes, setQrCodes] = useState<QRCode[]>([{
-    id: 1,
-    title: '',
-    url: '',
-    qr_code: '',
-    createdAt: '',
-    updatedAt: ''
-  }]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAllQrCodes()
-      .then((qrCodes) => setQrCodes(qrCodes))
-      .finally(() => setLoading(false))
-  })
-
-  return {
-    qrCodes,
-    loading
-  }
-
-}
-
-
-
 export {
-  useHomeForm,
-  useGetAllQrCodes
+  useHomeForm
 };
