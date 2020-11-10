@@ -3,6 +3,11 @@ export interface CreateQR {
   url: string
 }
 
+export interface UpdateQR {
+  title: string,
+  url: string
+}
+
 export interface QRCode {
   id: number,
   title: string,

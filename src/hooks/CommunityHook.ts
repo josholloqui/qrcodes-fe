@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getAllQrCodes, getQrCode } from '../service/qrcodeAPI';
-import { QRCode } from '../interfaces';
+import { deleteQrCode, getAllQrCodes, getQrCode, updateQrCode } from '../service/qrcodeAPI';
+import { QRCode, UpdateQR } from '../interfaces';
 
 const useGetAllQrCodes = () => {
   const [qrCodes, setQrCodes] = useState<QRCode[]>([{
@@ -17,7 +17,7 @@ const useGetAllQrCodes = () => {
     getAllQrCodes()
       .then((qrCodes) => setQrCodes(qrCodes))
       .finally(() => setLoading(false))
-  })
+  }, [])
 
   return {
     qrCodes,
@@ -36,6 +36,10 @@ const useGetQrCode = (id: number) => {
     updatedAt: ''
   })
   const [loading, setLoading] = useState(true);
+  const [update, setUpdate] = useState<UpdateQR>({
+    title: '',
+    url: ''
+  })
 
   useEffect(() => {
     getQrCode(id)
@@ -43,9 +47,33 @@ const useGetQrCode = (id: number) => {
       .finally(() => setLoading(false));
   }, [id]);
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const qrCode = await updateQrCode(id, update);
+
+    return qrCode;
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    const { name, value } = target;
+    setUpdate({ ...update, [name]: value });
+  };
+
+  const handleDelete = () => {
+    return deleteQrCode(id);
+  };
+
+
+
   return {
     details,
-    loading
+    loading,
+    handleDelete,
+    handleSubmit,
+    handleChange,
+    update
   }
 
 

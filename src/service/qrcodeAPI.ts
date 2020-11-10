@@ -16,11 +16,29 @@ const getAllQrCodes = () => {
 
 const getQrCode = (id: number) => {
   return fetch(`${URL}/qrcodes/${id}`)
-    .then(res => res.json())
+    .then(res => res.json());
+}
+
+const deleteQrCode = (id: number) => {
+  return fetch(`${URL}/qrcodes/${id}`, {
+    method: 'DELETE',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}
+  });
+}
+
+const updateQrCode = (id: number, qrCode: {title: string, url: string}) => {
+  return fetch(`${URL}/qrcodes/${id}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify({title: `${qrCode.title}`, url: `${qrCode.url}`})
+  })
+    .then(res => res.json());
 }
 
 export {
   createQrCode,
   getAllQrCodes,
-  getQrCode
+  getQrCode,
+  deleteQrCode,
+  updateQrCode
 };
